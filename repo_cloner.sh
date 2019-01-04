@@ -41,7 +41,7 @@ clear
 #Gets Number Of Branches From JSON
 BNO=$(tr ' ' '\n' < $BRANCHF | grep name | wc -l)
 printf "Branches:\n"
-k=0
+k=1
 for ((i = 0; i < $BNO ; i++))
 do
 	echo "[$k] $(jq -r ".[$i].name" $BRANCHF)"
