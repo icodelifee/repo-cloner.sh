@@ -20,7 +20,7 @@ then
 fi
 
 #Stores And Display No Of Available Repositories
-REPOS=$(curl -s https://api.github.com/users/icodelifee | jq '.public_repos')
+REPOS=$(curl -s https://api.github.com/users/$USERN | jq '.public_repos')
 #REPOS=$(tr ' ' '\n' < $JSON | grep name | wc -l)
 
 echo "No Of Repositories $REPOS"
@@ -28,11 +28,13 @@ echo "No Of Repositories $REPOS"
 #Prints Repo Name With Index
 for ((i = 0; i < $REPOS ; i++))
 do
-	echo "[$i] $(jq -r ".[$i].name" $JSON)"
+	echo "[$((i+=1))] $(jq -r ".[$i].name" $JSON)"
+	i=$((i-1))
 done
 
 printf "Enter Repo Index To Clone: "
 read INDEX
+INDEX=$((INDEX-1))
 REPO=$(jq -r ".[$INDEX].name" $JSON)
 printf "Getting Branch Information.."
 wget -q -O $BRANCHF https://api.github.com/repos/$USERN/$REPO/branches
@@ -40,12 +42,13 @@ clear
 #Gets Number Of Branches From JSON
 BNO=$(tr ' ' '\n' < $BRANCHF | grep name | wc -l)
 printf "Branches:\n"
-for ((i = 0; i < $BNO ; i++))
+for ((i = 1; i <= $BNO ; i++))
 do
 	echo "[$i] $(jq -r ".[$i].name" $BRANCHF)"
 done
 printf "Enter Branch To Clone :"
 read BRANCHI
+BRANCHI=$((BRANCHI-1))
 BRANCH=$(jq -r ".[$BRANCHI].name" $BRANCHF)
 printf "Enter Location To Clone[path/to/loc] :"
 read LOC
