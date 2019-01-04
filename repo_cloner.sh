@@ -34,7 +34,6 @@ done
 
 printf "Enter Repo Index To Clone: "
 read INDEX
-INDEX=$((INDEX-1))
 REPO=$(jq -r ".[$INDEX].name" $JSON)
 printf "Getting Branch Information.."
 wget -q -O $BRANCHF https://api.github.com/repos/$USERN/$REPO/branches
